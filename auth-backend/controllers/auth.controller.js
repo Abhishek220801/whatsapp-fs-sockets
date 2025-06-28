@@ -22,4 +22,24 @@ const signup = async (req, res) => {
     }
 }
 
+export const login = async (req, res) => {
+    try {
+        const {username, password} = req.body;
+        const foundUser = await User.findOne({username})
+        if(!foundUser){
+            res.status(401).json({message: 'Auth failed'});
+        } else {
+            const passwordMatch = await bcrypt.compare(password, foundUser?.password);
+            if(!passwordMatch){
+                res.status(401).json({message: 'Auth failed'});
+            }
+            generateTokenAndSetCookie(foundUser._id, res);
+            res.status(201).json({_id: foundUser._id, username: foundUser.username});
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({message: 'Login failed.'})
+    }
+}
+
 export default signup
