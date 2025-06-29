@@ -20,9 +20,14 @@ app.use(cors());
 
 io.on('connection', (socket)=>{
     console.log(`client connection established`, socket.id);
+
+    const username = socket.handshake.query.username;
+    console.log('Username:', username);
+
     socket.on('chat msg', (msg) => {
-        socket.broadcast.emit('chat msg', msg);
-        console.log(`Received message: ${msg}`);
+        console.log('Sent By:', msg.sender);
+        console.log("Receiver:", msg.receiver);
+        console.log("Message:", msg.textMsg);
     })
 })
 
