@@ -18,16 +18,23 @@ const io = new Server(server, {
 
 app.use(cors());
 
+const userSocketMap = {};
+
 io.on('connection', (socket)=>{
-    console.log(`client connection established`, socket.id);
+    // console.log(`client connection established`, socket.id);
 
     const username = socket.handshake.query.username;
-    console.log('Username:', username);
+    console.log('Username of connected client:', username);
+
+    userSocketMap[username] = socket; //mapping to the usernames with their socket id in socket map
 
     socket.on('chat msg', (msg) => {
-        console.log('Sent By:', msg.sender);
-        console.log("Receiver:", msg.receiver);
-        console.log("Message:", msg.textMsg);
+        console.log('Received message:', msg);
+        // socket.broadcast.emit('chat msg', msg); // ✅ send to all others
+        const receiverSocket = userSocketMap[msg.receiver];
+        if(receiverSocket){
+            receiverSocket.emit('chat msg', msg); //private messaging
+        }
     })
 })
 
