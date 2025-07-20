@@ -4,6 +4,9 @@ import dotenv from 'dotenv'
 import http from 'http'
 import {Server} from 'socket.io'
 import cors from 'cors'
+import connectDB from './db/connectDB.js';
+import { addMsgToConversation } from './controllers/msg.controller.js';
+import msgsRouter from './routes/msgs.route.js'
 
 const port = 8080;
 
@@ -35,13 +38,21 @@ io.on('connection', (socket)=>{
         if(receiverSocket){
             receiverSocket.emit('chat msg', msg); //private messaging
         }
+        addMsgToConversation([msg.sender, msg.receiver], {
+            text: msg.text,
+            sender: msg.sender,
+            receiver: msg.receiver
+        })
     })
 })
+
+app.use('/msgs', msgsRouter);
 
 app.get('/', (_, res)=>{
     res.send('Welcome to HHLD Chat App!')
 })
 
-server.listen(port, ()=>{
+server.listen(port, async ()=>{
+    await connectDB();
     console.log(`Server is listening at http://localhost:${port}`)
 });
