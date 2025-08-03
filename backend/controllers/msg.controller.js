@@ -1,7 +1,7 @@
 import Conversation from "../models/chat.model.js";
 
 export const addMsgToConversation = async (participants, msg) => {
-    try{
+    try{      
         let conversation = await Conversation.findOne(
             {users: {$all: participants}}
         )
