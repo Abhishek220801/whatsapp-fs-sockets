@@ -1,21 +1,21 @@
-import {Schema, model} from 'mongoose'
+import mongoose from "mongoose";
 
-const msgSchema = new Schema({
+const msgSchema = mongoose.Schema({
     text: {
         type: String,
-        required: true,
+        required: true
     },
     sender: {
         type: String,
-        required: true,
+        required: true
     },
     receiver: {
         type: String,
-        required: true,
-    },
+        required: true
+    }
 })
 
-const conversationSchema = new Schema({
+const conversationSchema = mongoose.Schema({
     users: [
         {
             type: String,
@@ -25,6 +25,5 @@ const conversationSchema = new Schema({
     msgs: [msgSchema]
 })
 
-const Conversation = model('Conversation', conversationSchema);
-
-export default Conversation;
+const conversation = mongoose.model('Conversation', conversationSchema);
+export default conversation;

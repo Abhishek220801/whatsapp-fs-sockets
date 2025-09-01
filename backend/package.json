@@ -1,21 +1,26 @@
 {
-  "name": "hhld-chat-server",
+  "name": "hhld-chat-be",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "devstart": "nodemon index.js"
   },
-  "keywords": [],
-  "author": "abhishek9012",
+  "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "http": "^0.0.1-security",
-    "mongoose": "^8.16.4",
-    "socket.io": "^4.8.1"
+    "ioredis": "^5.4.1",
+    "mongoose": "^8.3.2",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }

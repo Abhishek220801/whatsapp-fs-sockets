@@ -1,58 +1,77 @@
-dotenv.config();
-import express from 'express'
-import dotenv from 'dotenv'
-import http from 'http'
-import {Server} from 'socket.io'
-import cors from 'cors'
-import connectDB from './db/connectDB.js';
-import { addMsgToConversation } from './controllers/msg.controller.js';
-import msgsRouter from './routes/msgs.route.js'
+import express from "express"
+import dotenv from "dotenv"
+import http from "http"
+import { Server } from "socket.io";
+import cors from "cors";
+import msgsRouter from "./routes/msgs.route.js"
+import connectToMongoDB from "./db/connectTOMongoDB.js";
+import { addMsgToConversation } from "./controllers/msgs.controller.js";
+import { subscribe, publish } from "./redis/msgsPubSub.js";
 
-const port = 8080;
+
+
+dotenv.config();
+const port = process.env.PORT || 5000;
 
 const app = express();
+app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        allowedHeaders: ['*'],
-        origin: '*'
-    }
-});
-
-app.use(cors());
+        allowedHeaders: ["*"],
+        origin: "*"
+      }
+ });
 
 const userSocketMap = {};
 
-io.on('connection', (socket)=>{
-    // console.log(`client connection established`, socket.id);
-
+io.on('connection', (socket) => {
     const username = socket.handshake.query.username;
     console.log('Username of connected client:', username);
 
-    userSocketMap[username] = socket; //mapping to the usernames with their socket id in socket map
+    userSocketMap[username] = socket;
+
+
+    const channelName = `chat_${username}`
+    subscribe(channelName, (msg) => {
+          console.log('Received message:', msg);
+          socket.emit("chat msg", JSON.parse(msg));
+    });
+
 
     socket.on('chat msg', (msg) => {
-        console.log('Received message:', msg);
-        // socket.broadcast.emit('chat msg', msg); // ✅ send to all others
+        console.log(msg.sender);
+        console.log(msg.receiver);
+        console.log(msg.text);
+        console.log(msg);
         const receiverSocket = userSocketMap[msg.receiver];
-        if(receiverSocket){
-            receiverSocket.emit('chat msg', msg); //private messaging
+        if(receiverSocket) {
+          //both sender and receiver are connected to same BE
+          receiverSocket.emit('chat msg', msg);
+        } else {
+          // sender and receiver on diff BEs, so we need to use pubsub
+          const channelName = `chat_${msg.receiver}`
+          publish(channelName, JSON.stringify(msg));
         }
+
         addMsgToConversation([msg.sender, msg.receiver], {
-            text: msg.text,
-            sender: msg.sender,
-            receiver: msg.receiver
-        })
-    })
+                  text: msg.text,
+                  sender:msg.sender,
+                  receiver:msg.receiver
+                }
+        )
+    });
+
 })
 
 app.use('/msgs', msgsRouter);
 
-app.get('/', (_, res)=>{
-    res.send('Welcome to HHLD Chat App!')
-})
-
-server.listen(port, async ()=>{
-    await connectDB();
-    console.log(`Server is listening at http://localhost:${port}`)
+app.get('/', (req, res) => {
+  res.send('Congratulations HHLD Folks!');
 });
+
+server.listen(port, () => {
+  connectToMongoDB();
+  console.log(`Server is listening at http://localhost:${port}`);
+});
+
