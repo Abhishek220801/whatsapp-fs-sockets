@@ -38,7 +38,7 @@ const Chat = () => {
             router.replace('/')
             return;
         };
-        const newSocket = io(`http://localhost:8080`, {
+        const newSocket = io(`http://localhost:8084`, {
             query: {
                username: authName.toLowerCase().trim()
             }
