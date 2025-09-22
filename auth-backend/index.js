@@ -2,20 +2,20 @@ import express from "express"
 import dotenv from "dotenv"
 import authRouter from "./routes/auth.route.js"
 import usersRouter from "./routes/users.route.js"
-import connectToMongoDB from "./db/connectToMongoDB.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import connectDB from "./db/connectDB.js";
 
 dotenv.config();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8081;
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: [`${process.env.BE_HOST}:3000`, `${process.env.BE_HOST}:3001`]
- }));
+  origin: [`http://localhost:3000`, `http://localhost:3001`]
+}));
  
 
 app.use('/auth', authRouter);
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  connectToMongoDB();
+  connectDB();
   console.log(`Server is listening at http://localhost:${PORT}`);
 });
 

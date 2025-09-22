@@ -3,9 +3,7 @@ import Conversation from "../models/chat.model.js";
 export const addMsgToConversation = async (participants, msg) => {
    try {
        // Find conversation by participants
-       let conversation = await Conversation.findOne(
-                                   { users: { $all: participants } });
-
+       let conversation = await Conversation.findOne({ users: { $all: participants } });
 
        // If conversation doesn't exist, create a new one
        if (!conversation) {

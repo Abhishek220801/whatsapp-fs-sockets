@@ -7,15 +7,15 @@ import axios from 'axios'
 
 const ChatUsers = () => {
     const {users} = useUsersStore();
-    const { chatReceiver, updateChatReceiver} = useChatReceiverStore();
-    const { updateChatMsgs} = useChatMsgsStore();
+    const {chatReceiver, updateChatReceiver} = useChatReceiverStore();
+    const {updateChatMsgs} = useChatMsgsStore();
     const {authName} = useAuthStore();
 
     const setChatReceiver = (user) => {
         updateChatReceiver(user.username);
-      }    
+    }    
       
-      useEffect(() => {
+    useEffect(() => {
         const getMsgs = async () => {
             console.log('getting msgs------------');
             const res = await axios.get('http://localhost:8080/msgs',
@@ -40,11 +40,17 @@ const ChatUsers = () => {
     }, [chatReceiver]) 
 
     return (
-        <div>
-            {users.map((user, index) => (
-                <div onClick={() => setChatReceiver(user)}
-                    className='bg-blue-300 rounded-xl m-3 p-5'>
-                    { user.username }
+        <div className="p-2 h-full overflow-y-auto">
+            {users.map((user,i) => (
+                <div 
+                    onClick={() => setChatReceiver(user)}
+                    className='bg-blue-300 rounded-xl m-3 p-5'
+                    key={user._id || i}
+                    title={user.username}
+                >
+                    <span className="block truncate text-sm w-full">
+                        { user.username }
+                    </span>
                 </div>
             ))}
         </div>

@@ -16,10 +16,9 @@ const signup = async(req, res) => {
             await user.save();
             return res.status(201).json({message: "User registered!"});
         }
-
     } catch(error) {
-        console.log(error);
-        return res.status(500).json({message: "User reg failed!"});
+        console.log(error.message);
+        return res.status(500).json({message: "User registration failed!"});
     }
 }
 
@@ -29,17 +28,17 @@ export const login = async(req, res) => {
         const foundUser = await User.findOne({username});
         if(!foundUser) {
             return res.status(401).json({message: "Auth failed"});
-        } else {
-            const passwordMatch = await bcrypt.compare(password, foundUser?.password);
+        } else { 
+            const passwordMatch = await bcrypt.compare(password, foundUser.password || "");
             if(!passwordMatch) {
                 return res.status(401).json({message: "Auth failed"});
             }
             generateJWTTokenAndSetCookie(foundUser._id, res);
-            return res.status(201).json({_id: foundUser._id, username: foundUser.username});
+            return res.status(200).json({_id: foundUser._id, username: foundUser.username});
         }
 
     } catch(error) {
-        console.log(error);
+        console.log(error.message);
         return res.status(500).json({message: "Login failed!"});
     }
 }
