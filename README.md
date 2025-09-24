@@ -79,3 +79,6 @@ Currently, this is a personal learning project, but suggestions and improvements
 
 This project is **work in progress** ⚒️. Follow along as I keep building 🚀
 
+## Demo Video shared 
+LinkedIn Post Link: https://tinyurl.com/whatsappwalkthru
+
