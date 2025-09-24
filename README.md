@@ -1,16 +1,3 @@
-Perfect 👌 Let’s make a clean and professional **README.md** for your WhatsApp-style chat app. It will:
-
-* Introduce the project
-* Show current features
-* Mention tech stack
-* Show how to run (basic instructions)
-* Mention that it’s still under development
-
-Here’s a draft:
-
----
-
-````markdown
 # WhatsApp-Style Real-Time Chat App 🚀  
 
 A full-stack chat application inspired by WhatsApp, built with **Next.js, MERN, Socket.IO, Docker, and Redis/Valkey PubSub**.  
@@ -43,7 +30,7 @@ This project is still **under development** — I’m actively building new feat
 ```bash
 git clone https://github.com/yourusername/whatsapp-fs-sockets.git
 cd whatsapp-fs-sockets
-````
+```
 
 ### 2️⃣ Setup environment variables
 
