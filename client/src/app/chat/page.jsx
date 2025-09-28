@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import io from "socket.io-client";
 import { useAuthStore } from '../zustand/useAuthStore';
 import { useUsersStore } from '../zustand/useUsersStore';
@@ -17,7 +17,12 @@ const Chat = () => {
     const {updateUsers} = useUsersStore();
     const {chatReceiver} = useChatReceiverStore();
     const {chatMsgs, updateChatMsgs} = useChatMsgsStore();
+<<<<<<< HEAD
     const router = useRouter();
+=======
+    const router = useRouter()
+    const messagesEndRef = useRef(null);
+>>>>>>> ad05dfcc20f9ebd02d314c6ecfd14823d2a80e70
 
     const getUserData = async () => {
     const res = await axios.get(`http://localhost:8081/users`,
@@ -28,9 +33,17 @@ const Chat = () => {
         console.log(res.data);
     }
 
+    useEffect(()=>{
+        messagesEndRef.current?.scrollIntoView({behavior:"smooth"});
+    }, [chatMsgs])
+
     useEffect(() => {
         if(!authName){
+<<<<<<< HEAD
             router.replace('/');
+=======
+            router.replace('/')
+>>>>>>> ad05dfcc20f9ebd02d314c6ecfd14823d2a80e70
             return;
         };
         const newSocket = io(`http://localhost:8080`, {
@@ -56,7 +69,7 @@ const Chat = () => {
 
    const sendMsg = (e) => {
        e.preventDefault();
-        if(!msg.trim()) return;
+       if(!msg.trim()) return;
        const msgToBeSent = {
             text: msg,
             sender: authName,
@@ -104,6 +117,7 @@ const Chat = () => {
                             className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Send
                         </button>
+                        <div ref={messagesEndRef}></div>
                     </div>
                 </form>
             </div>
