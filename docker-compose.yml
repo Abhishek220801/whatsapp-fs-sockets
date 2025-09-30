@@ -1,8 +1,4 @@
 version: '3.8'
-<<<<<<< HEAD
-=======
-
->>>>>>> ad05dfcc20f9ebd02d314c6ecfd14823d2a80e70
 services:
  backend:
    build:
@@ -36,8 +32,4 @@ services:
    ports:
      - "3001:3000"
    depends_on:
-<<<<<<< HEAD
      - backend # Wait for backend service to be ready before starting frontend
-=======
-     - backend # Wait for backend service to be ready before starting frontend
->>>>>>> ad05dfcc20f9ebd02d314c6ecfd14823d2a80e70

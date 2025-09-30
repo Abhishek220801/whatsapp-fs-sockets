@@ -21,7 +21,7 @@ export const addMsgToConversation = async (participants, msg) => {
 const getMsgsForConversation = async (req, res) => {
     try {
         const { sender, receiver } = req.query;
-        console.log(sender + receiver);
+        console.log('Sender: '+ sender + "\nReceiver: " + receiver);
         const participants = [sender, receiver];
         // Find conversation by participants
         const conversation = await Conversation.findOne({ users: { $all: participants } });

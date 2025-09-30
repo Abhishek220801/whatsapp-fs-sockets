@@ -48,6 +48,7 @@ io.on('connection', (socket) => {
 
   const channelName = `chat_${username}`
   subscribe(channelName, (msg) => {
+    console.log(`Received message: ${msg}`);
     socket.emit("chat msg", JSON.parse(msg));
   });
 
@@ -58,9 +59,12 @@ io.on('connection', (socket) => {
         console.log(msg);
         const receiverSocket = userSocketMap[msg.receiver];
         if (receiverSocket) {
+          // both sender and receiver on same BE
           receiverSocket.emit('chat msg', msg);
         } else {
+          // sender and receiver on diff BE's, so need to publish the messsage on Redis pub/sub 
           const channelName = `chat_${msg.receiver}`
+          
           publish(channelName, JSON.stringify(msg));
         }
      

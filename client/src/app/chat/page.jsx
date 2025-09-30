@@ -17,12 +17,7 @@ const Chat = () => {
     const {updateUsers} = useUsersStore();
     const {chatReceiver} = useChatReceiverStore();
     const {chatMsgs, updateChatMsgs} = useChatMsgsStore();
-<<<<<<< HEAD
     const router = useRouter();
-=======
-    const router = useRouter()
-    const messagesEndRef = useRef(null);
->>>>>>> ad05dfcc20f9ebd02d314c6ecfd14823d2a80e70
 
     const getUserData = async () => {
     const res = await axios.get(`http://localhost:8081/users`,
@@ -39,11 +34,7 @@ const Chat = () => {
 
     useEffect(() => {
         if(!authName){
-<<<<<<< HEAD
             router.replace('/');
-=======
-            router.replace('/')
->>>>>>> ad05dfcc20f9ebd02d314c6ecfd14823d2a80e70
             return;
         };
         const newSocket = io(`http://localhost:8080`, {
