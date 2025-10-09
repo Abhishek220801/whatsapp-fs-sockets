@@ -19,11 +19,11 @@ const Chat = () => {
     const {chatMsgs, updateChatMsgs} = useChatMsgsStore();
     const router = useRouter();
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL;
     const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
 
     const getUserData = async () => {
-    const res = await axios.get(`${API_URL}/users`,
+    const res = await axios.get(`${AUTH_URL}/users`,
         {
             withCredentials: true
         })
