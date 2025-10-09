@@ -3,6 +3,17 @@ import { createProxyMiddleware } from "http-proxy-middleware"
 
 const app = express()
 
+app.use(cors({
+   credentials: true,
+   origin: [
+     "http://localhost:3000",
+     "http://localhost:3001",
+     "http://localhost:3002",
+     "https://whatsapp-fs-sockets.vercel.app",
+     "https://whatsapp-fs-sockets-mwwj.vercel.app"
+   ]
+ }));
+
 const routes = {
    	"/api/auth": process.env.AUTH_BACKEND_URL + "/auth",
    	"/api/users": process.env.AUTH_BACKEND_URL + "/users",

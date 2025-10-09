@@ -6,7 +6,7 @@ import cors from "cors";
 import msgsRouter from "./routes/msgs.route.js"
 import connectDB from "./db/connectDB.js";
 import { addMsgToConversation } from "./controllers/msgs.controller.js";
-import Valkey from "ioredis";0
+import Valkey from "ioredis";
 import { subscribe, publish } from "./redis/msgsPubSub.js";
 dotenv.config();
 
@@ -19,7 +19,7 @@ const app = express();
 
 app.use(cors({
   credentials: true,
-  origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"]
+  origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "https://whatsapp-fs-sockets.vercel.app", "https://whatsapp-fs-sockets-mwwj.vercel.app"]
 }));
 
 
@@ -27,7 +27,14 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         allowedHeaders: ["*"],
-        origin: "*"
+        credentials: true,
+        origin: [
+          "http://localhost:3000",
+          "http://localhost:3001",
+          "http://localhost:3002",
+          "https://whatsapp-fs-sockets.vercel.app",
+          "https://whatsapp-fs-sockets-mwwj.vercel.app"
+        ],
       }
  });
 
