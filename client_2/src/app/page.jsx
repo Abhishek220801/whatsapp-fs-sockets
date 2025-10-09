@@ -9,7 +9,7 @@
     const [username, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const { updateAuthName } = useAuthStore()
-    const AUTH_PORT = 8081;
+    const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL
 
     const signUpFunc = async (e) => {
       e.preventDefault()
@@ -17,7 +17,7 @@
       try {
         console.log(username, password)
         const res = await axios.post(
-          `http://localhost:${AUTH_PORT}/auth/signup`,
+          `${AUTH_URL}/auth/signup`,
           {
             username,
             password,
@@ -43,7 +43,7 @@
 
       try {
         const res = await axios.post(
-          `http://localhost:${AUTH_PORT}/auth/login`,
+          `${AUTH_URL}/auth/login`,
           {
             username,
             password,
