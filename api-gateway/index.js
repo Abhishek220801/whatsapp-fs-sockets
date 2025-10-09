@@ -18,7 +18,7 @@ app.use(cors({
 const routes = {
    	"/api/auth": process.env.AUTH_BACKEND_URL + "/auth",
    	"/api/users": process.env.AUTH_BACKEND_URL + "/users",
-   	"/api/msgs": CHAT_BACKEND_URL + "/msgs"
+   	"/api/msgs": process.env.CHAT_BACKEND_URL + "/msgs"
 };
 
 for(const route in routes) {
