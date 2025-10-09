@@ -18,7 +18,7 @@ const ChatUsers = () => {
     useEffect(() => {
         const getMsgs = async () => {
             console.log('getting msgs------------');
-            const res = await axios.get('http://localhost:8080/msgs',
+            const res = await axios.get('https://whatsapp-fs-sockets.onrender.com/msgs',
                 {
                     params: {
                         'sender': authName,

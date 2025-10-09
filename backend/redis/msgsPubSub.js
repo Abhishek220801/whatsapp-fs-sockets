@@ -40,13 +40,12 @@ export function subscribe(channel, callback) {
  // it checks if the channel matches the specified channel and
  // calls the provided callback function with the received message
 
- subscriber.on('message', (subscribedChannel, message) => {
-   console.log('Subscriber ', subscribedChannel, ' has received msg ', message);
-   if (subscribedChannel === channel) {
-     callback(message);
-   };
- })
-};
+subscriber.on('message', (subscribedChannel, message) => {
+  console.log('Subscriber ', subscribedChannel, ' has received msg ', message);
+  if (subscribedChannel === channel) {
+    callback(message);
+  };
+})};
 
 // Function to unsubscribe from a Redis channel
 export function unsubscribe(channel) {

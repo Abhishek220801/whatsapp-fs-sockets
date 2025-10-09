@@ -5,7 +5,7 @@ const app = express()
 const routes = {
    	"/api/auth": "http://localhost:8081/auth",
    	"/api/users": "http://localhost:8081/users",
-   	"/api/msgs": "http://localhost:8080/msgs"
+   	"/api/msgs": "https://whatsapp-fs-sockets.onrender.com/msgs"_
 }
 
 for(const route in routes) {

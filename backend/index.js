@@ -63,8 +63,7 @@ io.on('connection', (socket) => {
           receiverSocket.emit('chat msg', msg);
         } else {
           // sender and receiver on diff BE's, so need to publish the messsage on Redis pub/sub 
-          const channelName = `chat_${msg.receiver}`
-          
+          const channelName = `chat_${msg.receiver}`       
           publish(channelName, JSON.stringify(msg));
         }
      
