@@ -19,8 +19,11 @@ const Chat = () => {
     const {chatMsgs, updateChatMsgs} = useChatMsgsStore();
     const router = useRouter();
 
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
+
     const getUserData = async () => {
-    const res = await axios.get(`http://localhost:8081/users`,
+    const res = await axios.get(`${API_URL}/users`,
         {
             withCredentials: true
         })
@@ -33,7 +36,7 @@ const Chat = () => {
             router.replace('/');
             return;
         };
-        const newSocket = io(`http://localhost:8080`, {
+        const newSocket = io(SOCKET_URL, {
             query: {
                username: authName.toLowerCase().trim()
             }
