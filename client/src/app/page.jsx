@@ -9,7 +9,7 @@
     const [username, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const { updateAuthName } = useAuthStore()
-    const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL;
+    const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL?.replace(/\/$/, "");
 
     const signUpFunc = async (e) => {
       e.preventDefault()
