@@ -14,8 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: [`http://localhost:3000`, `http://localhost:3001`,`http://localhost:3002`, "https://whatsapp-fs-sockets.vercel.app",
-    "https://whatsapp-fs-sockets-mwwj.vercel.app"]
+  origin: ["https://whatsapp-fs-sockets.vercel.app","https://whatsapp-fs-sockets-mwwj.vercel.app"]
 }));
  
 

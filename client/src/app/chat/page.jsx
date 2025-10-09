@@ -1,5 +1,5 @@
 'use client'
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import io from "socket.io-client";
 import { useAuthStore } from '../zustand/useAuthStore';
 import { useUsersStore } from '../zustand/useUsersStore';
@@ -20,8 +20,7 @@ const Chat = () => {
     const router = useRouter();
 
     const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-    const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
+    const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL
 
     const getUserData = async () => {
     const res = await axios.get(`${AUTH_URL}/users`,
