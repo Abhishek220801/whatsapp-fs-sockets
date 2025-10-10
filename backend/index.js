@@ -27,14 +27,12 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         allowedHeaders: ["*"],
-        credentials: true,
         origin: [
-          "http://localhost:3000",
-          "http://localhost:3001",
-          "http://localhost:3002",
           "https://whatsapp-fs-sockets.vercel.app",
           "https://whatsapp-fs-sockets-mwwj.vercel.app"
         ],
+        methods: ["GET", "POST"],
+        credentials: true
       }
  });
 
@@ -44,7 +42,6 @@ valkey.set("key", "hello world");
 
 valkey.get("key").then(function (result) {
     console.log(`The value of key is: ${result}`);
-    valkey.disconnect();
 });
 
 io.on('connection', (socket) => {
