@@ -10,6 +10,7 @@ const ChatUsers = () => {
     const {chatReceiver, updateChatReceiver} = useChatReceiverStore();
     const {updateChatMsgs} = useChatMsgsStore();
     const {authName} = useAuthStore();
+    const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
 
     const setChatReceiver = (user) => {
         updateChatReceiver(user.username);
@@ -18,7 +19,7 @@ const ChatUsers = () => {
     useEffect(() => {
         const getMsgs = async () => {
             console.log('getting msgs------------');
-            const res = await axios.get('https://whatsapp-fs-sockets.onrender.com/msgs',
+            const res = await axios.get(SOCKET_URL+'/msgs',
                 {
                     params: {
                         'sender': authName,

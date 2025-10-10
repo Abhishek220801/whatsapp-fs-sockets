@@ -38,7 +38,8 @@ const Chat = () => {
         };
         const newSocket = io(SOCKET_URL, {
             query: {
-               username: authName.toLowerCase().trim()
+               username: authName.toLowerCase().trim(),
+               transports: ["websocket"],
             }
         });
         setSocket(newSocket);
