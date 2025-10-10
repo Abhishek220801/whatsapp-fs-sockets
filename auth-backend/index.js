@@ -17,7 +17,6 @@ app.use(cors({
   origin: ["https://whatsapp-fs-sockets.vercel.app","https://whatsapp-fs-sockets-mwwj.vercel.app"]
 }));
  
-
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 

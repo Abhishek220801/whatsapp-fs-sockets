@@ -7,9 +7,6 @@ const app = express()
 app.use(cors({
    credentials: true,
    origin: [
-     "http://localhost:3000",
-     "http://localhost:3001",
-     "http://localhost:3002",
      "https://whatsapp-fs-sockets.vercel.app",
      "https://whatsapp-fs-sockets-mwwj.vercel.app"
    ]
