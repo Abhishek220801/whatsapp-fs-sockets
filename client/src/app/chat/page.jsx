@@ -55,7 +55,7 @@ const Chat = () => {
        return () => {
         newSocket.disconnect()
        };
-},[authName]);
+},[authName, chatMsgs]);
 
    const sendMsg = (e) => {
        e.preventDefault();
