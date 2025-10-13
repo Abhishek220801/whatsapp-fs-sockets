@@ -20,6 +20,7 @@ const Chat = () => {
     const {chatReceiver} = useChatReceiverStore();
     const {chatMsgs, updateChatMsgs} = useChatMsgsStore();
     const router = useRouter();
+    const messagesEndRef = useRef(null);
 
     const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL;
     const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
@@ -94,6 +95,14 @@ const Chat = () => {
                 return prev;
             });
         });
+
+        // Scroll to bottom whenever new message arrives
+    useEffect(() => {
+        if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [filteredMessages]);
+        
 
         // Load users once
         getUserData();
@@ -184,6 +193,7 @@ const Chat = () => {
                             </div>
                         </div>
                     ))}
+                    <div ref={messagesEndRef}></div>
                 </div>
                 
                 <div className='h-20 p-4 border-t'>
