@@ -5,14 +5,14 @@ const verifyToken = (req, res, next) => {
     console.log(token);
     if(!token) {
         return res.status(401).json({message: 'Unauthorized: Token not provided'});
-    }
+    };
 
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        if(!decodedToken) return res.status(401).json({message: 'Unauthorized: Invalid Token'});
         console.log(decodedToken);
         next();
     } catch (error) {
-        res.status(401).json({message: 'Unauthorized: Invalid Token'});
         console.log(error.message);
     }
 }

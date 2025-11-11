@@ -4,6 +4,7 @@
   import { useRouter } from "next/navigation"
   import { useAuthStore } from "./zustand/useAuthStore"
   import {usernameSchema, passwordSchema} from './validationSchemas.js'
+  import {User} from '../../../auth-backend/models/user.model.js'
   import { toast } from "react-toastify"
 
   const Auth = () => {
@@ -11,59 +12,56 @@
     const [username, setUserName] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
     const { updateAuthName } = useAuthStore()
     const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL?.replace(/\/$/, "");
+
+    const parseCredentials = (username, password) => {
+      try{
+        usernameSchema.parse(username);
+        passwordSchema.parse(password);
+        return true;  // Validation successful
+      } catch (validationError){
+          toast.error(JSON.parse(validationError)[0].message)
+          return false;
+        }
+    }
 
     const signUpFunc = async (e) => {
       e.preventDefault()
 
+      // setIsLoading(true);
+      console.log(username, password)  
+         // for debugging
+      if(!parseCredentials(username, password)){
+        return;
+      }
+
       try {
-        setIsLoading(true);
-        console.log(username, password)     // for debugging
         const res = await axios.post(
           `${AUTH_URL}/auth/signup`,
-          {
-            username,
-            password,
-          },
+          { username, password },
           {
             withCredentials : true,
           }
         )
         console.log(res)
         if (res.data.message === "Username already exists") {
-          toast.warning("Username already exists")
+          toast.warning(res.data.message)
           return;
         } else {
-          try{
-            usernameSchema.parse(username);
-            passwordSchema.parse(password);
-          } 
-          catch (validationError){
-            toast.error(JSON.parse(validationError)[0].message)
-            return;
-          }
           updateAuthName(username)
-          // setIsLoading(false); 
           router.push('/chat')
         }
       } catch (err) {
         console.log("Error in signup function : ", err.response?.data || err.message)
-        setIsLoading(false);
       }
     }
     
     const loginFunc = async (e) => {
       e.preventDefault()
 
-      try{
-        usernameSchema.parse(username);
-        passwordSchema.parse(password)
-      } catch (validationError){
-        toast.error(JSON.parse(validationError)[0].message)
-        return;
-      }
+      parseCredentials(username, password);
       
       try {
         setIsLoading(true);
