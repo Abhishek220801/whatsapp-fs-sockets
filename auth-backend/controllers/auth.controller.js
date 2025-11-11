@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import generateJWTTokenAndSetCookie from "../utils/generateToken.js";
 
 const signup = async (req, res) => {
+    console.log(JSON.parse(JSON.stringify(req.headers["host"])));
     try {
         const {username, password} = req.body;
         const foundUser = await User.findOne({username});

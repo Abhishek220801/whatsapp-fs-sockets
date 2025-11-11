@@ -27,6 +27,18 @@ const allowedOrigins = [
   "http://localhost:3002/"
 ];
 
+app.use("/",(req,res,next) =>{
+  console.log(req.headers["origin"])
+   if(!allowedOrigins.includes(req.headers["origin"])){
+      return  
+   }
+   res.set({
+    "Access-Control-Allow-Origin":req.headers["origin"]
+   })
+   next()
+})
+
+
 // const corsOptions = {
 //   origin: function (origin, callback) {
 //     if (!origin || allowedOrigins.includes(origin)) {

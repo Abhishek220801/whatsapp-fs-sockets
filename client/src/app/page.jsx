@@ -29,7 +29,6 @@
           },
           {
             withCredentials : true,
-            
           }
         )
         console.log(res)

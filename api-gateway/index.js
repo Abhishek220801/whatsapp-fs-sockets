@@ -3,6 +3,7 @@ import { createProxyMiddleware } from "http-proxy-middleware"
 import cors from 'cors'
 
 const app = express()
+const PORT = process.env.PORT || 8083;
 
 app.use(cors({
    credentials: true,
@@ -23,7 +24,6 @@ for(const route in routes) {
    app.use(route, createProxyMiddleware({target, changeOrigin: true}));
 }
 
-const PORT = process.env.PORT || 8083;
 
 app.listen(PORT, () => {
    console.log(`api gateway started listening on port : ${PORT}`)
