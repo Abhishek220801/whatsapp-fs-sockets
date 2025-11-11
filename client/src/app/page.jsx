@@ -3,11 +3,15 @@
   import { useState } from "react"
   import { useRouter } from "next/navigation"
   import { useAuthStore } from "./zustand/useAuthStore"
+  import {usernameSchema, passwordSchema} from './validationSchemas.js'
+  import { toast } from "react-toastify"
 
   const Auth = () => {
     const router = useRouter()
     const [username, setUserName] = useState("")
     const [password, setPassword] = useState("")
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { updateAuthName } = useAuthStore()
     const AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL?.replace(/\/$/, "");
 
@@ -15,7 +19,8 @@
       e.preventDefault()
 
       try {
-        console.log(username, password)
+        setIsLoading(true);
+        console.log(username, password)     // for debugging
         const res = await axios.post(
           `${AUTH_URL}/auth/signup`,
           {
@@ -24,24 +29,45 @@
           },
           {
             withCredentials : true,
+            
           }
         )
         console.log(res)
         if (res.data.message === "Username already exists") {
-          alert("Username already exists")
+          toast.warning("Username already exists")
+          return;
         } else {
+          try{
+            usernameSchema.parse(username);
+            passwordSchema.parse(password);
+          } 
+          catch (validationError){
+            toast.error(JSON.parse(validationError)[0].message)
+            return;
+          }
           updateAuthName(username)
+          // setIsLoading(false); 
           router.push('/chat')
         }
       } catch (err) {
         console.log("Error in signup function : ", err.response?.data || err.message)
+        setIsLoading(false);
       }
     }
-
+    
     const loginFunc = async (e) => {
       e.preventDefault()
 
+      try{
+        usernameSchema.parse(username);
+        passwordSchema.parse(password)
+      } catch (validationError){
+        toast.error(JSON.parse(validationError)[0].message)
+        return;
+      }
+      
       try {
+        setIsLoading(true);
         const res = await axios.post(
           `${AUTH_URL}/auth/login`,
           {
@@ -54,10 +80,12 @@
         )
         if(res.data.username){
           updateAuthName(username)
+          setIsLoading(false)
           router.push("/chat")
         }
       } catch (err) {
         console.log("Error in login function : ", err.response?.data || err.message)
+        setIsLoading(false);
       }
     }
 
@@ -102,11 +130,12 @@
                     name="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    type="password"
+                    type={showPassword ? 'text': 'password'}
                     autoComplete="current-password"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                  <></>
                 </div>
               </div>
 

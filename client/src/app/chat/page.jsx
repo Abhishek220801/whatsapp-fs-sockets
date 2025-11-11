@@ -37,6 +37,11 @@ const Chat = () => {
         }
     }
 
+    useEffect(()=>{
+     // Load users once
+        getUserData();   
+    }, []);
+
     // Initialize socket connection - ONLY depends on authName
     useEffect(() => {
         if(!authName){
@@ -88,24 +93,13 @@ const Chat = () => {
                     m.receiver === msg.receiver &&
                     Math.abs(new Date(m.timestamp) - new Date(msg.timestamp)) < 1000
                 );
-                
+                    
                 if (!isDuplicate) {
                     return [...prev, { ...msg, timestamp: msg.timestamp || new Date().toISOString() }];
                 }
                 return prev;
             });
         });
-
-        // Scroll to bottom whenever new message arrives
-    useEffect(() => {
-        if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [filteredMessages]);
-        
-
-        // Load users once
-        getUserData();
 
         // Cleanup on unmount
         return () => {
@@ -115,7 +109,6 @@ const Chat = () => {
             newSocket.off('disconnect');
             newSocket.off('connect_error');
             newSocket.disconnect();
-            socketRef.current = null;
         };
     }, [authName, SOCKET_URL, router]); // Removed chatMsgs from dependencies!
 

@@ -176,7 +176,7 @@ const Chat = () => {
                         'bg-gray-100 text-gray-800'
                     }`}>
                         {connectionStatus}
-                    </span>
+                    </span> 
                 </div>
                 
                 <div className='flex-1 overflow-y-auto p-4'>

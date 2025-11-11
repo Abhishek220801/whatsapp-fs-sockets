@@ -5,7 +5,7 @@ const generateJWTTokenAndSetCookie = (userId, res) => {
         expiresIn: "15d"
     })
     res.cookie("jwt", token, {
-        maxAge: 7*24*60*60*1000, //miliseconds
+        maxAge: 7*24*60*60*1000, //milliseconds = 7 days 
         httpOnly: true,
         sameSite:"None",
         secure: true    
