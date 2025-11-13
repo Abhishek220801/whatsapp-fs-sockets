@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import http from "http";
 import { Server } from "socket.io";
-import cors from "cors";
+// import cors from "cors";
 import msgsRouter from "./routes/msgs.route.js";
 import connectDB from "./db/connectDB.js";
 import { addMsgToConversation } from "./controllers/msgs.controller.js";

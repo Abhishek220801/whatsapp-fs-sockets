@@ -3,12 +3,12 @@ import bcrypt from "bcrypt"
 import generateJWTTokenAndSetCookie from "../utils/generateToken.js";
 
 const signup = async (req, res) => {
-    console.log(JSON.parse(JSON.stringify(req.headers["host"])));
+    console.log(req.headers["host"]);
     try {
         const {username, password} = req.body;
         const foundUser = await User.findOne({username});
         if(foundUser) {
-            return res.status(409).json({message: "Username already exists"});
+            return res.status(409).json({message: "Email already registered"});
         } else {
             const hashedPassword = await bcrypt.hash(password, 10);
             await User.create({username, password: hashedPassword});
