@@ -4,6 +4,7 @@
   import { useRouter } from "next/navigation"
   import { useAuthStore } from "./zustand/useAuthStore"
   import {usernameSchema, passwordSchema} from './validationSchemas.js'
+  // import validateCredentials from '../../../auth-backend/middleware/validate.js'
   import { toast } from "react-toastify"
 
   const Auth = () => {
@@ -21,15 +22,15 @@
         passwordSchema.parse(password);
         return true;  // Validation successful
       } catch (validationError){
-          toast.error(JSON.parse(validationError)[0].message)
-          return false;
-        }
+        toast.error(JSON.parse(validationError)[0].message)
+        return false;
+      }
     }
 
     const signUpFunc = async (e) => {
       e.preventDefault()
 
-      setIsLoading(true);
+      // setIsLoading(true);
       console.log(username, password)  
          // for debugging
       if(!parseCredentials(username, password)){
@@ -45,7 +46,7 @@
           }
         )
         console.log(res)
-        if (res.data.message === "Username already exists") {
+        if (res.data.message === "Email already registered") {
           toast.warning(res.data.message)
           return;
         } else {
@@ -60,28 +61,32 @@
     const loginFunc = async (e) => {
       e.preventDefault()
 
-      parseCredentials(username, password);
+      // parseCredentials(username, password);
       
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const res = await axios.post(
           `${AUTH_URL}/auth/login`,
-          {
-            username,
-            password,
-          },
+          { username, password},
           {
             withCredentials: true,
           }
         )
+        console.log(res);
+        // if(res.data.message==="Username does not exist"){
+        //   toast.warning(res.data.message)
+        //   return;
+        // } else{
         if(res.data.username){
           updateAuthName(username)
-          setIsLoading(false)
+          // setIsLoading(false)
           router.push("/chat")
         }
-      } catch (err) {
-        console.log("Error in login function : ", err.response?.data || err.message)
-        setIsLoading(false);
+      }
+      catch (err) {
+        const errorMessage = err.response?.data?.message || err.message || "Unknown error";
+        toast.error(errorMessage); // This will show the popup
+        console.log("Error in login function : ", errorMessage);
       }
     }
 
